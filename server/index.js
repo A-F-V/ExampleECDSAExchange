@@ -40,9 +40,9 @@ function verify_request(msg, signature, recovery) {
 
   const public_key = secp.recoverPublicKey(hash, signature, recovery);
 
-  console.log(public_key);
-  console.log(signature);
-  console.log(secp.verify(signature, hash, public_key));
+  console.log(
+    `Is the signature verified? ${secp.verify(signature, hash, public_key)}`
+  );
   return secp.verify(signature, hash, public_key);
 }
 
