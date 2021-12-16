@@ -3,3 +3,6 @@ dist
 !.gitignore
 .parcel-cache
 *.lock
+node_modules
+package-lock.json
+.vscode/*
