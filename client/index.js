@@ -24,10 +24,14 @@ document
         document.getElementById("balance").innerHTML = balance;
       });
   });
+const random_priv_key = Buffer.from(secp.utils.randomPrivateKey()).toString(
+  "hex"
+);
+const random_pub_key = secp.getPublicKey(random_priv_key);
 
-document
-  .getElementById("transfer-amount")
-  .addEventListener("click", async () => {
+document.getElementById("transfer-amount").addEventListener(
+  "click",
+  async () => {
     const sender = document.getElementById("exchange-address").value;
     const amount = document.getElementById("send-amount").value;
     const recipient = document.getElementById("recipient").value;
@@ -42,6 +46,11 @@ document
     const recovery = signatureArray[1];
     const signature = signatureArray[0];
 
+    const recovered_key = secp.recoverPublicKey(hash, signature, recovery);
+    console.log(recovered_key);
+    console.log(secp.verify(signature, hash, recovered_key));
+    console.log({ signature, hash, recovered_key });
+
     const body = JSON.stringify({ msg, signature, recovery });
 
     const request = new Request(`${server}/send`, { method: "POST", body });
@@ -53,4 +62,6 @@ document
       .then(({ balance }) => {
         document.getElementById("balance").innerHTML = balance;
       });
-  });
+  },
+  false
+);

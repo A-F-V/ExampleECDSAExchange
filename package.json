@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "run server": "nodemon server/index.js",
-    "run client": "npx parcel client/index.html"
+    "run client": "npx parcel client/index.html",
+    "run test": "nodemon sign_verify_test.js"
   },
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "devDependencies": {

@@ -35,15 +35,12 @@ function send_money(sender_account, amount, recipient_account) {
   recipient_account.balance += amount;
 }
 
-function verify_request(msg, signature, recovery) {
+function verify_request(msg, signature, recovery, sender_account) {
   const hash = SHA256(JSON.stringify(msg)).toString();
-
+  console.log(hash);
   const public_key = secp.recoverPublicKey(hash, signature, recovery);
 
-  console.log(
-    `Is the signature verified? ${secp.verify(signature, hash, public_key)}`
-  );
-  return secp.verify(signature, hash, public_key);
+  return sender_account.public_key === public_key;
 }
 
 display_accounts(accounts);
@@ -68,7 +65,7 @@ app.post("/send", (req, res) => {
     sender_account &&
     recipient_account &&
     sender_account.balance >= amt &&
-    verify_request(msg, signature, recovery)
+    verify_request(msg, signature, recovery, sender_account)
   ) {
     send_money(sender_account, amt, recipient_account);
   }
